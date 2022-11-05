@@ -10,6 +10,4 @@ app.set("view engine", "ejs");
 
 app.use("/", home); // use -> Method to register Middleware.
 
-app.listen(3000, () => {
-  console.log("server start listening on port 3000");
-});
+module.exports = app;
