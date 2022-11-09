@@ -1,6 +1,8 @@
 "use strict";
 
 const express = require("express");
+const bodyParser = require("body-parser");
+
 const app = express();
 const home = require("./src/routes/home");
 
@@ -8,7 +10,13 @@ const home = require("./src/routes/home");
 app.set("views", "./src/views");
 app.set("view engine", "ejs");
 
-app.use("/", home); // use -> Method to register Middleware.
 app.use(express.static(`${__dirname}/src/public`)); // register 'src/public' as static directory.
+app.use(bodyParser.json());
+/*
+    extended: true
+    Resolve Misrecognizing issues when request body contains korean words or spaces
+*/
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use("/", home); // use -> Method to register Middleware.
 
 module.exports = app;
