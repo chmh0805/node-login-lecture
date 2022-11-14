@@ -6,6 +6,7 @@ const controller = require("./home.ctrl");
 
 router.get("/", controller.output.home);
 router.get("/login", controller.output.login);
+router.get("/register", controller.output.register);
 
 router.post("/login", controller.process.login);
 
