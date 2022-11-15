@@ -8,18 +8,23 @@ class User {
   }
 
   login() {
-    const body = this.body;
-    const { id, pwd } = UserStorage.getUserInfo(body.id);
+    const client = this.body;
+    const { id, pwd } = UserStorage.getUserInfo(client.id);
 
     if (id) {
-      if (pwd === body.pwd) {
+      if (pwd === client.pwd) {
         return { success: true };
       } else {
         return { success: false, msg: `password is incorrect.` };
       }
     } else {
-      return { success: false, msg: `${body.id} doesn't exist.` };
+      return { success: false, msg: `${client.id} doesn't exist.` };
     }
+  }
+
+  register() {
+    const client = this.body;
+    UserStorage.save(client);
   }
 }
 

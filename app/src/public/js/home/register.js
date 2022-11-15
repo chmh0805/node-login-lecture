@@ -9,11 +9,16 @@ const registerBtn = document.querySelector("#register-btn");
 registerBtn.addEventListener("click", register);
 
 function register() {
+  if (!id.value) return alert("Please Press Id.");
+  if (!username.value) return alert("Please Press Name.");
+  if (!pwd.value) return alert("Please Press password.");
+  if (pwd.value !== confirmPwd.value)
+    return alert("Password value is not matched.");
+
   const reqBody = {
     id: id.value,
     name: username.value,
     pwd: pwd.value,
-    confirmPwd: confirmPwd.value,
   };
   console.log(reqBody);
 
