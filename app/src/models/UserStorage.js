@@ -14,15 +14,25 @@ class UserStorage {
     return userInfo;
   }
 
-  static getUsers(...fields) {
-    // const users = this.#users;
-    // const ret = fields.reduce((temp, field) => {
-    //   if (users.hasOwnProperty(field)) {
-    //     temp[field] = users[field];
-    //   }
-    //   return temp;
-    // }, {});
-    // return ret;
+  static #getUsers(data, isAll, fields) {
+    const users = JSON.parse(data);
+    if (isAll) return users;
+    const newUsers = fields.reduce((newUsers, field) => {
+      if (users.hasOwnProperty(field)) {
+        newUsers[field] = users[field];
+      }
+      return newUsers;
+    }, {});
+    return newUsers;
+  }
+
+  static getUsers(isAll, ...fields) {
+    return fs
+      .readFile(__dirname + "/../database/users.json")
+      .then((data) => {
+        return this.#getUsers(data, isAll, fields);
+      })
+      .catch(console.error);
   }
 
   static getUserInfo(id) {
@@ -34,12 +44,16 @@ class UserStorage {
       .catch(console.error);
   }
 
-  static save(userInfo) {
-    // const users = this.#users;
-    // users.id.push(userInfo.id);
-    // users.pwd.push(userInfo.pwd);
-    // users.name.push(userInfo.name);
-    // return { success: true };
+  static async save(userInfo) {
+    const users = await this.getUsers(true);
+    if (users.id.indexOf(userInfo.id) > -1) {
+      throw `${userInfo.id} already exists.`;
+    }
+    users.id.push(userInfo.id);
+    users.pwd.push(userInfo.pwd);
+    users.name.push(userInfo.name);
+    fs.writeFile(__dirname + "/../database/users.json", JSON.stringify(users));
+    return { success: true };
   }
 }
 
