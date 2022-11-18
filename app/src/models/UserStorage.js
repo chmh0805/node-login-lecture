@@ -1,6 +1,6 @@
 "use strict";
 
-const fs = require("fs").promises;
+const database = require(__dirname + "/../config/db");
 
 class UserStorage {
   static #getUserInfo(data, id) {
@@ -26,35 +26,19 @@ class UserStorage {
     return newUsers;
   }
 
-  static getUsers(isAll, ...fields) {
-    return fs
-      .readFile(__dirname + "/../database/users.json")
-      .then((data) => {
-        return this.#getUsers(data, isAll, fields);
-      })
-      .catch(console.error);
-  }
+  static getUsers(isAll, ...fields) {}
 
-  static getUserInfo(id) {
-    return fs
-      .readFile(__dirname + "/../database/users.json")
-      .then((data) => {
-        return this.#getUserInfo(data, id);
-      })
-      .catch(console.error);
-  }
-
-  static async save(userInfo) {
-    const users = await this.getUsers(true);
-    if (users.id.indexOf(userInfo.id) > -1) {
-      throw `${userInfo.id} already exists.`;
+  static async getUserInfo(id) {
+    try {
+      const data = await database.find({ id: id }).exec();
+      console.log(data);
+      return data[0];
+    } catch (err) {
+      throw err;
     }
-    users.id.push(userInfo.id);
-    users.pwd.push(userInfo.pwd);
-    users.name.push(userInfo.name);
-    fs.writeFile(__dirname + "/../database/users.json", JSON.stringify(users));
-    return { success: true };
   }
+
+  static async save(userInfo) {}
 }
 
 module.exports = UserStorage;
