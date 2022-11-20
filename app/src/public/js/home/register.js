@@ -44,7 +44,7 @@ function register() {
         window.location.reload(true);
       }
     })
-    .catch((err) => {
+    .catch((_err) => {
       console.error(new Error("register Error"));
     });
 }
