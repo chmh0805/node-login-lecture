@@ -31,12 +31,17 @@ mongoose.connection.on("disconnected", () => {
   connect();
 });
 
-const usersSchema = new mongoose.Schema({
-  id: { type: String, required: true },
-  pwd: { type: String, required: true },
-  name: { type: String, required: true },
-  in_date: { type: Date, default: () => new Date() },
-});
+const usersSchema = new mongoose.Schema(
+  {
+    id: { type: String, required: true, unique: true },
+    pwd: { type: String, required: true },
+    name: { type: String, required: true },
+    in_date: { type: Date, default: Date.now },
+  },
+  {
+    versionKey: false,
+  }
+);
 const users = mongoose.model("User", usersSchema, "users");
 
 module.exports = users;
