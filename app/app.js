@@ -1,7 +1,11 @@
 "use strict";
 
+const dotenv = require("dotenv");
 const express = require("express");
 const bodyParser = require("body-parser");
+
+// env Setting
+dotenv.config();
 
 const app = express();
 const home = require("./src/routes/home");

@@ -1,15 +1,8 @@
 "use strict";
 
-const YAML = require("yaml");
-const fs = require("fs");
 const mongoose = require("mongoose");
-const mongo_config = YAML.parse(
-  fs.readFileSync(__dirname + "/mongo_config.yml", "utf-8")
-);
-const mongodb_url = `mongodb+srv://${
-  mongo_config.connection.user
-}:${encodeURIComponent(
-  mongo_config.connection.password
+const mongodb_url = `mongodb+srv://${process.env.DB_USER}:${encodeURIComponent(
+  process.env.DB_PASSWORD
 )}@login-lecture.dgb30v2.mongodb.net/?retryWrites=true&w=majority`;
 
 mongoose.set("debug", true);
@@ -18,7 +11,7 @@ const connect = () => {
   mongoose.connect(mongodb_url, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    dbName: "login_lecture",
+    dbName: process.env.DB_DATABASE,
   });
 };
 connect();
