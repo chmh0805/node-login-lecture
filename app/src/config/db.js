@@ -1,11 +1,18 @@
 "use strict";
 
 const mongoose = require("mongoose");
+const logger = require("./logger");
 const mongodb_url = `mongodb+srv://${process.env.DB_USER}:${encodeURIComponent(
   process.env.DB_PASSWORD
 )}@login-lecture.dgb30v2.mongodb.net/?retryWrites=true&w=majority`;
 
-mongoose.set("debug", true);
+mongoose.set("debug", (collectionName, method, query, doc) => {
+  logger.info(
+    `${collectionName}.${method} - ${JSON.stringify(query)} - ${JSON.stringify(
+      doc
+    )}`
+  );
+});
 
 const connect = () => {
   mongoose.connect(mongodb_url, {
@@ -17,10 +24,10 @@ const connect = () => {
 connect();
 
 mongoose.connection.on("error", (err) => {
-  console.log("mongodb connection Error : " + err);
+  logger.error("mongodb connection Error : " + err);
 });
 mongoose.connection.on("disconnected", () => {
-  console.log("mongodb disconnected! Try to connect again");
+  logger.error("mongodb disconnected! Try to connect again");
   connect();
 });
 

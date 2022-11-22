@@ -3,6 +3,8 @@
 const dotenv = require("dotenv");
 const express = require("express");
 const bodyParser = require("body-parser");
+const logger = require(__dirname + "/src/config/logger");
+const morgan = require("morgan");
 
 // env Setting
 dotenv.config();
@@ -23,6 +25,7 @@ app.use(bodyParser.json());
     Resolve Misrecognizing issues when request body contains korean words or spaces
 */
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(morgan("tiny", { stream: logger.stream }));
 
 app.use("/", home); // use -> Method to register Middleware.
 

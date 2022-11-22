@@ -1,6 +1,7 @@
 "use strict";
 
 const database = require(__dirname + "/../config/db");
+const logger = require(__dirname + "/../config/logger");
 
 class UserStorage {
   static async getUsers(isAll, ...fields) {
@@ -15,7 +16,7 @@ class UserStorage {
         });
         data = await database.find({}, findObj).exec();
       }
-      console.log(data);
+      logger.info(data);
       return data[0];
     } catch (err) {
       throw err;
@@ -28,6 +29,7 @@ class UserStorage {
       if (data.length === 0) {
         throw Error(`${id} not exists.`);
       }
+      logger.info(data[0]);
       return data[0];
     } catch (err) {
       throw err.toString();
@@ -37,7 +39,7 @@ class UserStorage {
   static async save(userInfo) {
     try {
       const result = await new database(userInfo).save();
-      console.log(result);
+      logger.info(result);
       return { success: true };
     } catch (err) {
       throw err.toString();
