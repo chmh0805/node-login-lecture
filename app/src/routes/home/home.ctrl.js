@@ -1,6 +1,6 @@
 "use strict";
 
-const User = require("../../models/User");
+const User = require(__dirname + "/../../models/User");
 const logger = require(__dirname + "/../../config/logger");
 
 // for GET Requests.

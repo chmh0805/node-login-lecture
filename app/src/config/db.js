@@ -1,7 +1,7 @@
 "use strict";
 
 const mongoose = require("mongoose");
-const logger = require("./logger");
+const logger = require(__dirname + "/logger");
 const mongodb_url = `mongodb+srv://${process.env.DB_USER}:${encodeURIComponent(
   process.env.DB_PASSWORD
 )}@login-lecture.dgb30v2.mongodb.net/?retryWrites=true&w=majority`;
