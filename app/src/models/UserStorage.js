@@ -26,11 +26,12 @@ class UserStorage {
   static async getUserInfo(id) {
     try {
       const data = await database.find({ id: id }).exec();
-      if (data.length === 0) {
-        throw Error(`${id} not exists.`);
+      if (data) {
+        logger.info(data[0]);
+        return data[0];
+      } else {
+        return undefined;
       }
-      logger.info(data[0]);
-      return data[0];
     } catch (err) {
       throw err.toString();
     }

@@ -10,16 +10,14 @@ class User {
   async login() {
     const client = this.body;
     try {
-      const { id, pwd } = await UserStorage.getUserInfo(client.id);
-      if (id) {
-        if (pwd === client.pwd) {
+      const user = await UserStorage.getUserInfo(client.id);
+      if (user) {
+        if (user.pwd === client.pwd) {
           return { success: true };
-        } else {
-          return { success: false, msg: `password is incorrect.` };
         }
-      } else {
-        return { success: false, msg: `${client.id} doesn't exist.` };
+        return { success: false, msg: `password is incorrect.` };
       }
+      return { success: false, msg: `${client.id} doesn't exist.` };
     } catch (err) {
       return { success: false, err };
     }

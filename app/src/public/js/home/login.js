@@ -45,6 +45,9 @@ function login() {
         if (res.msg) {
           alert(res.msg);
         } else {
+          if (res.err) {
+            console.log(res.err);
+          }
           alert("Failed to Login...");
         }
         window.location.reload(true);

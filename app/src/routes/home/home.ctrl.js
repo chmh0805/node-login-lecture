@@ -24,31 +24,42 @@ const process = {
     logger.info(`request: ${JSON.stringify(req.body)}`);
     const user = new User(req.body);
     const response = await user.login();
-    if (response.err)
-      logger.error(
-        `POST / 200 "/login" success: ${response.success}, msg: ${response.err}`
-      );
-    else
-      logger.info(
-        `POST / 200 "/login" success: ${response.success}, msg: ${response.msg}`
-      );
-    return res.json(response);
+    const respBody = {
+      method: "POST",
+      path: "/register",
+      status: response.err ? 400 : 200,
+    };
+    log(response, respBody);
+    return res.status(respBody.status).json(response);
   },
 
   register: async (req, res) => {
     logger.info(`request: ${JSON.stringify(req.body)}`);
     const user = new User(req.body);
     const response = await user.register();
-    if (response.err)
-      logger.error(
-        `POST / 200 "/register" success: ${response.success}, msg: ${response.err}`
-      );
-    else
-      logger.info(
-        `POST / 200 "/register" success: ${response.success}, msg: ${response.msg}`
-      );
-    return res.json(response);
+
+    const respBody = {
+      method: "POST",
+      path: "/register",
+      status: response.err ? 400 : 201,
+    };
+    log(response, respBody);
+    return res.status(respBody.status).json(response);
   },
+};
+
+const log = (response, respBody) => {
+  if (response.err) {
+    logger.error(
+      `${respBody.method} / ${respBody.status} "${respBody.path}" Response: ${response.success}, msg: ${response.err}`
+    );
+  } else {
+    logger.info(
+      `${respBody.method} / ${respBody.status} "${respBody.path}" Response: ${
+        response.success
+      }, msg: ${response.msg || ""}`
+    );
+  }
 };
 
 module.exports = {
